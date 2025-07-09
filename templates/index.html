@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Student Performance Predictor</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f9fc;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        .form-container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            max-width: 500px;
+        }
+
+        h2 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+        }
+
+        label {
+            text-align: left;
+            display: block;
+            font-weight: bold;
+            margin-top: 15px;
+            margin-bottom: 5px;
+            color: #34495e;
+        }
+
+        input[type="number"],
+        select {
+            width: 100%;
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+        }
+
+        input[type="submit"] {
+            background-color: #3498db;
+            color: white;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            width: 100%;
+            margin-top: 15px;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #2980b9;
+        }
+
+        h3 {
+            color: green;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="form-container">
+        <h2>🎓 Predict Student Final Grade</h2>
+        <form method="post" action="/predict">
+            <label>Average Grade (G1 + G2)/2:</label>
+            <input type="number" name="avg_grade" step="0.1" required>
+
+            <label>Number of Failures:</label>
+            <input type="number" name="failures" required>
+
+            <label>Study Time (1-4):</label>
+            <input type="number" name="studytime" min="1" max="4" required>
+
+            <label>Absences:</label>
+            <input type="number" name="absences" required>
+
+            <label>Go Out Frequency (1-5):</label>
+            <input type="number" name="goout" min="1" max="5" required>
+
+            <label>Free Time at  School (1-5):</label>
+            <input type="number" name="freetime"  min="1" max="5" required>
+
+            <label>Internet Access:</label>
+            <select name="internet" required>
+                <option>Yes</option>
+                <option>No</option>
+            </select>
+
+            <input type="submit" value="Predict Grade">
+        </form>
+        <h3>{{ prediction_text }}</h3>
+    </div>
+</body>
+</html>
