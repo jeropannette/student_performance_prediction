@@ -6,7 +6,7 @@ app = Flask(__name__)
 
 # Load your trained model and the scaler
 model = joblib.load("rf_model.pkl")
-scaler = joblib.load("scaler.pkl")  #  Load the scaler
+scaler = joblib.load("scaler.pkl")  # Load the scaler
 
 @app.route('/')
 def home():
@@ -15,7 +15,7 @@ def home():
 @app.route('/predict', methods=['POST'])
 def predict():
     try:
-        avg_grade = float(request.form['avg_grade'])
+        avg_grade = float(request.form['avg_grade'])  # out of 20
         failures = int(request.form['failures'])
         studytime = int(request.form['studytime'])
         absences = int(request.form['absences'])
@@ -26,14 +26,17 @@ def predict():
         # Create feature array
         features = np.array([[avg_grade, failures, studytime, absences, goout, freetime, internet]])
 
-        #  Apply scaling
+        # Apply scaling
         scaled_features = scaler.transform(features)
 
         # Predict using the trained model
         prediction = model.predict(scaled_features)
 
+        # Keep G3 out of 20
         percentage = (prediction[0] / 20) * 100
-return render_template('index.html', prediction_text=f"Predicted Final Grade (G3): {round(prediction[0], 2)} / 20 ({round(percentage, 2)}%)")
+
+        return render_template('index.html',
+            prediction_text=f"Predicted Final Grade (G3): {round(prediction[0], 2)} / 20 ({round(percentage, 2)}%)")
 
     except Exception as e:
         return render_template('index.html', prediction_text=f"Error: {e}")
